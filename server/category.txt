@@ -1,0 +1,15 @@
+카테고리에 관한 코드 명세
+1 : 생필품
+
+/// postman /product/create query
+
+name:휴족시간 공구합니다
+total:18000
+people:6
+price:3000
+source:online
+category:1
+portion:2
+tags:pack
+ends:2022-11-09
+createdby:JaeHyun Shin

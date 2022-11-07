@@ -1,12 +1,12 @@
 DROP DATABASE IF EXISTS products;
 CREATE DATABASE products;
 CREATE USER IF NOT EXISTS 'gongu'@'localhost' IDENTIFIED BY 'asdf1234';
-GRANT ALL PRIVILEGES ON products.* TO 'gongu'@'%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON products.* TO 'gongu'@'localhost' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
 
-USE chatUser;
+USE products;
 CREATE TABLE user (
-	ID		VARCHAR(20) 	NOT NULL	PRIMARY KEY,
+	  ID		VARCHAR(20) 	NOT NULL	PRIMARY KEY,
     PWD		VARCHAR(20)		NOT NULL,
     NICK	VARCHAR(20)		NOT NULL,
     UNIQUE (ID)
@@ -18,7 +18,7 @@ INSERT INTO user VALUES('jake@sogang.ac.kr', 'asdf1234', 'jake');
 INSERT INTO user VALUES('shin@sogang.ac.kr', 'asdf1234', 'shin');
 INSERT INTO user VALUES('park@sogang.ac.kr', 'asdf1234', 'park');
 
-CREATE TABLE `chatuser`.`products` (
+CREATE TABLE `products`.`product` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `total` INT NOT NULL,
@@ -27,18 +27,18 @@ CREATE TABLE `chatuser`.`products` (
   `portion` INT NOT NULL,
   `unit` VARCHAR(45) NOT NULL,
   `source` VARCHAR(10) NOT NULL,
-  `category` VARCHAR(100) NOT NULL,
+  `category` INT NOT NULL,
   `tags` VARCHAR(100) NULL,
   `ends` DATE NOT NULL,
   `createdat` DATETIME NOT NULL DEFAULT current_timestamp,
-  `createdby` INT NOT NULL,
+  `createdby` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `IDX_SELLER` (`createdby` ASC, `createdat` ASC) INVISIBLE)
 COMMENT = '	';
 
 
-CREATE TABLE `chatuser`.`images` (
+CREATE TABLE `products`.`image` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `product_id` INT NOT NULL,
   `type` INT NOT NULL DEFAULT 1 COMMENT '1-thumbnail\n2-제품 이미지',
