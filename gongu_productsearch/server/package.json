@@ -1,0 +1,11 @@
+{
+  "name": "gongu_productsearch_server",
+  "version": "1.0.0",
+  "description": "gongu_productsearch_server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "JaeHyun Shin",
+  "license": "ISC"
+}
