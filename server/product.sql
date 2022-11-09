@@ -22,7 +22,8 @@ CREATE TABLE `products`.`product` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(100) NOT NULL,
   `total` INT NOT NULL,
-  `people` INT NOT NULL DEFAULT 0,
+  'ordered' INT NOT NULL,
+  `people` INT NOT NULL DEFAULT 1,
   `price` INT NOT NULL DEFAULT 0,
   `portion` INT NOT NULL,
   `unit` VARCHAR(45) NOT NULL,
@@ -37,7 +38,6 @@ CREATE TABLE `products`.`product` (
   INDEX `IDX_SELLER` (`createdby` ASC, `createdat` ASC) INVISIBLE)
 COMMENT = '	';
 
-
 CREATE TABLE `products`.`image` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `product_id` INT NOT NULL,
@@ -45,3 +45,10 @@ CREATE TABLE `products`.`image` (
   `path` VARCHAR(150) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `IDX_SEARCH` (`product_id` ASC, `type` ASC) VISIBLE);
+
+CREATE TABLE `products`.`contents` (
+`id` INT NOT NULL AUTO_INCREMENT,
+`product_id` INT NOT NULL,
+`content` TEXT NOT NULL,
+PRIMARY KEY (`id`),
+UNIQUE INDEX `product_id_UNIQUE` (`product_id` ASC) VISIBLE);

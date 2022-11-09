@@ -1,0 +1,22 @@
+{
+  "name": "gongu_productsearch",
+  "version": "1.0.0",
+  "description": "Product search sub_app for capstonedesign1_gongu",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shinjh0305-jhshin/CapstoneDesign1_ProductSearch.git"
+  },
+  "author": "JaeHyun Shin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shinjh0305-jhshin/CapstoneDesign1_ProductSearch/issues"
+  },
+  "homepage": "https://github.com/shinjh0305-jhshin/CapstoneDesign1_ProductSearch#readme",
+  "dependencies": {
+    "bootstrap": "^5.2.2"
+  }
+}

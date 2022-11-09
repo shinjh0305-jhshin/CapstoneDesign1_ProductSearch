@@ -1,5 +1,7 @@
 카테고리에 관한 코드 명세
 1 : 생필품
+2 : 식품
+3 : 주방용품
 
 /// postman /product/create query
 
@@ -13,3 +15,32 @@ portion:2
 tags:pack
 ends:2022-11-09
 createdby:JaeHyun Shin
+
+INSERT INTO `products`.`image` (`product_id`, `type`, `path`) VALUES ('1', '1', './prod1.PNG');
+INSERT INTO `products`.`image` (`product_id`, `type`, `path`) VALUES ('2', '1', './prod2.PNG');
+INSERT INTO `products`.`image` (`product_id`, `type`, `path`) VALUES ('3', '1', './prod3.PNG');
+INSERT INTO `products`.`image` (`product_id`, `type`, `path`) VALUES ('4', '1', './prod4.PNG');
+
+ALTER TABLE `products`.`product` 
+ADD COLUMN `ordered` INT NOT NULL DEFAULT 0 AFTER `total`;
+
+update product
+set ordered = 1 
+where id = 5;
+
+SELECT product.*, image.type, image.path
+FROM product JOIN image
+ON product.id = image.product_id;
+
+ALTER TABLE `products`.`product` 
+CHANGE COLUMN `ordered` `ordered` INT NOT NULL DEFAULT 1 ;
+
+INSERT INTO `products`.`contents` (`product_id`, `content`) VALUES ('1', '휴족시간 같이 쓰실분 있나요? 너무 많이 사서 남네요.....');
+
+INSERT INTO `products`.`image` (`product_id`, `type`, `path`) VALUES ('1', '2', './prod2.PNG');
+INSERT INTO `products`.`image` (`product_id`, `type`, `path`) VALUES ('1', '2', './prod3.PNG');
+INSERT INTO `products`.`image` (`product_id`, `type`, `path`) VALUES ('1', '2', './prod4.PNG');
+
+SELECT path
+FROM image
+WHERE image.product_id =

@@ -1,22 +1,30 @@
 {
-  "name": "gongu_productsearch",
-  "version": "1.0.0",
-  "description": "Product search sub_app for capstonedesign1_gongu",
-  "main": "index.js",
+  "name": "productsearch",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
+    "format": "prettier .  --write"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/shinjh0305-jhshin/CapstoneDesign1_ProductSearch.git"
-  },
-  "author": "JaeHyun Shin",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/shinjh0305-jhshin/CapstoneDesign1_ProductSearch/issues"
-  },
-  "homepage": "https://github.com/shinjh0305-jhshin/CapstoneDesign1_ProductSearch#readme",
   "dependencies": {
-    "bootstrap": "^5.2.2"
+    "axios": "^1.1.3",
+    "bootstrap": "^5.2.2",
+    "path": "^0.12.7",
+    "vite-plugin-require": "^1.0.7",
+    "vue": "^3.2.41",
+    "vue-router": "^4.1.6"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.2.0",
+    "eslint": "^8.27.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-vue": "^9.7.0",
+    "install": "^0.13.0",
+    "prettier": "2.7.1",
+    "vite": "^3.2.3"
   }
 }
