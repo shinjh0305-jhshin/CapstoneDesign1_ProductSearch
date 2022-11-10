@@ -19,7 +19,7 @@
             <router-link class="nav-link active" to="/">제품리스트</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/create">제품등록</router-link>
+            <router-link class="nav-link" to="/sales">제품등록</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="#">채팅</router-link>

@@ -1,45 +1,45 @@
 <template>
-  <main class="mt-3">
+  <main class="mt-3 text-center">
     <div class="container">
-      <div class="row mb-2">
-        <div class="col-12">
-          <select class="form-select">
-            <option selected></option>
-            <option value="1">생활용품</option>
-            <option value="2">주방용품</option>
-            <option value="3">식품</option>
-          </select>
-        </div>
+      <div class="float-end mb-1">
+        <router-link to="/create">
+          <button type="button" class="btn btn-dark">제품 등록</button>
+        </router-link>
       </div>
-      <div class="row g-3">
-        <div class="col-xl-3 col-lg-4 col-md-6" :key="i" v-for="(product, i) in productList">
-          <div class="card" style="width: 18rem">
-            <img :src="getImageUrl(product.path)" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">{{ product.name }}</h5>
-              <p class="card-text">
-                <span class="badge bg-dark me-1">{{ product.category }}</span>
-                <span class="badge bg-primary me-1">3/6명</span>
-                <span class="badge bg-warning me-1">3일뒤 마감</span>
-              </p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group" role="group" aria-label="Basic example">
-                  <router-link :to="{ name: 'Detail', query: { product_id: product.id } }">
-                    <button type="button" class="btn btn-sm btn-outline-secondary">공구 참여</button>
-                  </router-link>
-                </div>
-                <small class="text-dark">1인당 {{ product.price }}원</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th></th>
+            <th>제품명</th>
+            <th>제품가격</th>
+            <th>모집현황</th>
+            <th>마감일자</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(product, i) in productList" :key="i">
+            <td><img :src="getImageUrl(product.path)" style="height: 50px; width: auto" /></td>
+            <router-link :to="{ name: 'Detail', query: { product_id: product.id } }">
+              <td>{{ product.name }}</td>
+            </router-link>
+            <td>{{ formatCurrency(product.price) }}원</td>
+            <td>{{ product.ordered }} / {{ product.people }}</td>
+            <td>{{ formatTime(product.ends) }}</td>
+            <td>
+              <button type="button" class="btn btn-warning me-1">수정</button>
+              <button type="button" class="btn btn-danger">삭제</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </main>
 </template>
 
 <script setup>
 import useAxios from "@/modules/axios";
+import currencyFormat from "@/modules/currencyFormatter.js";
 import { ref } from "vue";
 
 const { axiosGet, axiosPost } = useAxios();
@@ -57,6 +57,16 @@ function getProductList() {
 const getImageUrl = (name) => {
   return new URL(`../assets/${name}`, import.meta.url).href;
 };
+
+//금액을 #,### 형태로 포맷팅한다.
+function formatCurrency(value) {
+  return currencyFormat(value);
+}
+
+function formatTime(value) {
+  var temp = value.split("T");
+  return temp[0];
+}
 
 getProductList(); //script setup에서는 created를 안 써도 된다.
 </script>
