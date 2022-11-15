@@ -19,8 +19,8 @@
               <h5 class="card-title">{{ product.name }}</h5>
               <p class="card-text">
                 <span class="badge bg-dark me-1">{{ product.category }}</span>
-                <span class="badge bg-primary me-1">3/6명</span>
-                <span class="badge bg-warning me-1">3일뒤 마감</span>
+                <span class="badge bg-red me-1">3/6명</span>
+                <span class="badge bg-blue me-1">3일뒤 마감</span>
               </p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group" role="group" aria-label="Basic example">

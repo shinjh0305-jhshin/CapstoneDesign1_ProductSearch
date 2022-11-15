@@ -1,18 +1,18 @@
 <template>
   <main class="mt-3">
     <div class="container">
-      <h2 class="text-center">제품 등록</h2>
+      <h2 class="text-center">공구 등록</h2>
       <div class="mb-3 row">
-        <label class="col-md-3 col-form-label">제품명</label>
+        <label class="col-md-3 col-form-label">공구 제목</label>
         <div class="col-md-9">
-          <input type="text" class="form-control" v-model="product.name" />
+          <input type="text" class="form-control" v-model="deal.name" />
         </div>
       </div>
       <div class="mb-3 row">
-        <label class="col-md-3 col-form-label">총 금액</label>
+        <label class="col-md-3 col-form-label">모을 금액</label>
         <div class="col-md-9">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" v-model="product.total" />
+            <input type="text" class="form-control" v-model="deal.goal" @keyup="calculatePrice()" />
             <span class="input-group-text">원</span>
           </div>
         </div>
@@ -21,17 +21,31 @@
         <label class="col-md-3 col-form-label">모일 인원</label>
         <div class="col-md-9">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" v-model="product.people" />
+            <input
+              id="numPeople"
+              type="text"
+              class="form-control"
+              v-model="deal.people"
+              @keyup="calculatePrice()"
+            />
             <span class="input-group-text">명</span>
           </div>
         </div>
       </div>
       <div class="mb-3 row">
-        <label class="col-md-3 col-form-label">공구 단가</label>
+        <label class="col-md-3 col-form-label">1인당 공구가격</label>
         <div class="col-md-9">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" v-model="product.price" />
+            <input type="text" class="form-control" v-model="deal.price" disabled readonly />
             <span class="input-group-text">원</span>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label class="col-md-3 col-form-label">구매 사이트</label>
+        <div class="col-md-9">
+          <div class="input-group mb-3">
+            <el-input v-model="deal.url" placeholder="물품을 구매한 사이트를 적어주세요" />
           </div>
         </div>
       </div>
@@ -40,67 +54,81 @@
         <div class="col-auto">
           <div class="input-group mb-3">
             <span class="input-group-text">1인당</span>
-            <input type="text" class="form-control" v-model="product.portion" />
-            <select class="form-select" v-model="product.unit">
+            <input type="text" class="form-control" v-model="deal.portion" />
+            <select class="form-select" v-model="deal.unit">
               <option v-for="(name, i) in units" :key="i" v-text="name" :value="name"></option>
             </select>
           </div>
         </div>
       </div>
       <div class="mb-3 row">
-        <label class="col-md-3 col-form-label">구매 경로</label>
-        <div class="col-auto">
-          <select class="form-select" aria-label="Default select example">
-            <option selected>온라인</option>
-            <option value="1">오프라인</option>
-          </select>
-        </div>
-      </div>
-      <div class="mb-3 row">
         <label class="col-md-3 col-form-label">카테고리</label>
         <div class="col-auto">
-          <select class="form-select" aria-label="Default select example">
-            <option selected>식료품</option>
-            <option value="1">생필품</option>
-            <option value="1">주방용품</option>
+          <select class="form-select" v-model="deal.category">
+            <option v-for="(name, i) in categories" :key="i" v-text="name" :value="i"></option>
           </select>
         </div>
       </div>
       <div class="mb-3 row">
-        <!--추후 bootstrap vue로 수정-->
         <label class="col-md-3 col-form-label">태그</label>
         <div class="col-md-9">
-          <input type="text" class="form-control" />
+          <el-tag
+            v-for="tag in deal.tags"
+            :key="tag"
+            :type="'success'"
+            class="mr-1"
+            closable
+            :disable-transitions="false"
+            size="large"
+            @close="handleClose(tag)"
+          >
+            {{ tag }}
+          </el-tag>
+          <el-input
+            v-if="inputVisible"
+            ref="InputRef"
+            v-model="inputValue"
+            class="col-auto"
+            @keyup.enter="handleInputConfirm"
+            @blur="handleInputConfirm"
+          />
+          <el-button v-else class="button-new-tag mr-1" @click="showInput"> + New Tag </el-button>
         </div>
       </div>
       <div class="mb-3 row">
-        <!--추후 bootstrap vue로 수정-->
         <label class="col-md-3 col-form-label">공구 마감일</label>
         <div class="col-md-9">
-          <input type="text" class="form-control" />
+          <el-date-picker
+            v-model="deal.ends"
+            type="date"
+            placeholder="Pick a day"
+            :disabled-date="disabledDate"
+          />
         </div>
       </div>
       <div class="mb-3 row">
         <label class="col-md-3 col-form-label">썸네일 이미지</label>
         <div class="col-md-9">
-          <input class="form-control" type="file" accept="image/png, image/jpeg" />
-          <div class="alert alert-info" role="alert">
-            <ul>
-              <li>파일 확장자 : png, jpg만 가능</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="mb-3 row">
-        <label class="col-md-3 col-form-label">상세 이미지</label>
-        <div class="col-md-9">
-          <input class="form-control" type="file" accept="image/png, image/jpeg" multiple />
-          <div class="alert alert-info" role="alert">
-            <ul>
-              <li>최대 5개 가능</li>
-              <li>파일 확장자 : png, jpg만 가능</li>
-            </ul>
-          </div>
+          <el-upload
+            v-model:file-list="uploadedFile"
+            class="upload-demo"
+            drag
+            action="http://localhost:8081/images/upload"
+            multiple
+            name="image_upload"
+            :on-success="onImageUpload"
+            :before-upload="beforeImageUpload"
+            :limit="5"
+          >
+            <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+            <div class="el-upload__text">Drop file here or <em>click to upload</em></div>
+            <template #tip>
+              <div class="el-upload__tip">
+                이미지 파일 당 최대 크기 : 5MB | 최대 5개 파일 업로드 가능<br />
+                가장 첫 이미지가 대표 이미지가 됩니다.
+              </div>
+            </template>
+          </el-upload>
         </div>
       </div>
       <div class="mb-3 row">
@@ -118,7 +146,7 @@
           </router-link>
         </div>
         <div class="col-6 d-grid p-1">
-          <button type="button" class="btn btn-lg btn-danger">저장하기</button>
+          <button type="button" @click="showResult" class="btn btn-lg btn-danger">저장하기</button>
         </div>
       </div>
     </div>
@@ -126,20 +154,130 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, nextTick, ref, onMounted } from "vue";
+import { UploadFilled } from "@element-plus/icons-vue";
 
+const categories = [
+  "디지털기기",
+  "생활가전",
+  "가구/인테리어",
+  "생활/주방",
+  "유아동",
+  "유아도서",
+  "여성의류",
+  "여성잡화",
+  "남성패션/잡화",
+  "뷰티/미용",
+  "스포츠/레저",
+  "취미/게임/음반",
+  "도서",
+  "티켓/교환권",
+  "가공식품",
+  "반려동물용품",
+  "식물",
+  "기타 물품",
+];
 const units = ["개", "권", "병", "장", "팩", "묶음", "박스", "세트", "자루", "켤레"];
-
-const product = reactive({
+const newDeal = {
   name: "",
-  total: 0,
+  goal: 0,
   people: 2,
   price: 0,
+  url: "",
   portion: 0,
   unit: "개",
-  source: "",
   category: 0,
-  tags: "",
+  tags: [],
   ends: "",
+  fileList: [],
+};
+
+onMounted(() => {
+  const userPrice = document.getElementById("numPeople");
+  numPeople.addEventListener("focusout", checkData);
+
+  function checkData(event) {
+    if (deal.people < 2) {
+      deal.people = 2;
+      deal.price = Math.floor(deal.goal / deal.people);
+    }
+  }
 });
+
+const inputValue = ref("");
+const inputVisible = ref(false);
+const InputRef = ref({});
+const categoryVisible = ref(false);
+const categoryName = ref("카테고리를 선택해주세요");
+const uploadedFile = ref([]);
+const deal = reactive(newDeal);
+
+const disabledDate = (time) => {
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = today.getMonth();
+  const day = today.getDate();
+
+  return time < new Date(year, month, day) || time > new Date(year, month, day + 7);
+};
+
+const handleClose = (tag) => {
+  deal.tags.splice(deal.tags.indexOf(tag), 1);
+};
+
+const showInput = () => {
+  inputVisible.value = true;
+  nextTick(() => {
+    InputRef.value.input.focus();
+  });
+};
+
+const calculatePrice = () => {
+  deal.price = Math.floor(deal.goal / deal.people);
+};
+
+const handleInputConfirm = () => {
+  if (inputValue.value) {
+    deal.tags.push(inputValue.value);
+  }
+  inputVisible.value = false;
+  inputValue.value = "";
+};
+
+const showResult = () => {
+  newDeal.fileList = [];
+  for (var i = 0; i < uploadedFile.value.length; i++) {
+    newDeal.fileList.push(uploadedFile.value[i].response.file);
+  }
+  console.log(newDeal);
+};
+
+function beforeImageUpload(img) {
+  const regex = /^image\/*/;
+  if (!regex.test(img.type)) {
+    ElMessage({
+      message: "이미지 파일만 업로드 할 수 있습니다.",
+      grouping: true,
+      type: "error",
+    });
+    return false;
+  } else if (img.size / 1024 / 1024 > 5) {
+    ElMessage({
+      message: "이미지 사이즈가 너무 큽니다.",
+      grouping: true,
+      type: "error",
+    });
+    return false;
+  }
+  return true;
+}
+
+function onImageUpload() {}
 </script>
+
+<style scoped>
+el-date-picker {
+  width: 50vw;
+}
+</style>

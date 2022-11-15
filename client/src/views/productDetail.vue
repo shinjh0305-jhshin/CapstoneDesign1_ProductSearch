@@ -31,8 +31,8 @@
               <h5 class="card-title pt-3 pb-3 border-top">단가 : {{ formatCurrency(productDetail.price) }}원 | 구매 단위 : {{ productDetail.portion }}{{ productDetail.unit }}</h5>
               <p class="card-text border-top pt-3">
                 <span class="badge bg-dark me-1">{{ productDetail.category }}</span>
-                <span class="badge bg-primary me-1">{{ productDetail.ordered }}/{{ productDetail.people }}명</span>
-                <span class="badge bg-warning me-1">3일뒤 마감</span>
+                <span class="badge bg-red me-1">{{ productDetail.ordered }}/{{ productDetail.people }}명</span>
+                <span class="badge bg-blue me-1">3일뒤 마감</span>
               </p>
               <p class="card-text pb-3">{{ productDetail.source }}</p>
               <p class="card-text pb-3">마포구 상암동</p>
