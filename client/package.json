@@ -17,6 +17,7 @@
     "bootstrap": "^5.2.2",
     "bootstrap-vue": "^2.23.1",
     "element-plus": "^2.2.20",
+    "moment": "^2.29.4",
     "path": "^0.12.7",
     "vite-plugin-require": "^1.0.7",
     "vue": "^3.2.41",

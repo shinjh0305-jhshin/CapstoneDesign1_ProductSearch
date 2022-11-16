@@ -116,7 +116,6 @@
             action="http://localhost:8081/images/upload"
             multiple
             name="image_upload"
-            :on-success="onImageUpload"
             :before-upload="beforeImageUpload"
             :limit="5"
           >
@@ -135,7 +134,12 @@
         <label class="col-md-3 col-form-label">상품 설명</label>
         <div class="col-md-9">
           <div class="mb-3">
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <textarea
+              class="form-control"
+              id="exampleFormControlTextarea1"
+              rows="3"
+              v-model="deal.content"
+            ></textarea>
           </div>
         </div>
       </div>
@@ -146,7 +150,7 @@
           </router-link>
         </div>
         <div class="col-6 d-grid p-1">
-          <button type="button" @click="showResult" class="btn btn-lg btn-danger">저장하기</button>
+          <button type="button" @click="submitDeal" class="btn btn-lg btn-danger">저장하기</button>
         </div>
       </div>
     </div>
@@ -155,29 +159,15 @@
 
 <script setup>
 import { reactive, nextTick, ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { UploadFilled } from "@element-plus/icons-vue";
+import * as moment from "moment";
+import useAxios from "@/modules/axios";
+import { categories, units } from "@/modules/selectData";
 
-const categories = [
-  "디지털기기",
-  "생활가전",
-  "가구/인테리어",
-  "생활/주방",
-  "유아동",
-  "유아도서",
-  "여성의류",
-  "여성잡화",
-  "남성패션/잡화",
-  "뷰티/미용",
-  "스포츠/레저",
-  "취미/게임/음반",
-  "도서",
-  "티켓/교환권",
-  "가공식품",
-  "반려동물용품",
-  "식물",
-  "기타 물품",
-];
-const units = ["개", "권", "병", "장", "팩", "묶음", "박스", "세트", "자루", "켤레"];
+const { axiosPost } = useAxios();
+const router = useRouter();
+
 const newDeal = {
   name: "",
   goal: 0,
@@ -190,6 +180,8 @@ const newDeal = {
   tags: [],
   ends: "",
   fileList: [],
+  content: "",
+  createdby: "JaeHyun Shin",
 };
 
 onMounted(() => {
@@ -246,10 +238,6 @@ const handleInputConfirm = () => {
 };
 
 const showResult = () => {
-  newDeal.fileList = [];
-  for (var i = 0; i < uploadedFile.value.length; i++) {
-    newDeal.fileList.push(uploadedFile.value[i].response.file);
-  }
   console.log(newDeal);
 };
 
@@ -273,7 +261,17 @@ function beforeImageUpload(img) {
   return true;
 }
 
-function onImageUpload() {}
+async function submitDeal() {
+  const dealServer = "http://localhost:8080/product/create";
+  newDeal.fileList = []; //fileList 포맷 변경
+  for (var i = 0; i < uploadedFile.value.length; i++) {
+    newDeal.fileList.push(uploadedFile.value[i].response.file);
+  }
+  newDeal.tags = JSON.stringify(newDeal.tags); //newDeal stringify
+  newDeal.ends = moment(newDeal.ends).format("YYYY-MM-DD"); //endDate 포맷 변경
+  await axiosPost(dealServer, newDeal);
+  router.replace("/");
+}
 </script>
 
 <style scoped>

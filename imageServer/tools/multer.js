@@ -3,7 +3,7 @@ const crypto = require("crypto");
 
 const fileValidate = (req, file, cb) => {
   const regex = /^image\/*/;
-  if (regex.test(file.mimetype) /*file.mimetype === "image/png" || file.mimetype === "image/jpg" || file.mimetype === "image/jpeg"*/) {
+  if (regex.test(file.mimetype)) {
     cb(null, true);
   } else {
     cb({ errorCode: 1 }, false); //1 : 파일 확장자 오류
@@ -13,7 +13,7 @@ const fileValidate = (req, file, cb) => {
 const upload = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, "./uploads");
+      cb(null, "../images");
     },
     filename: function (req, file, cb) {
       var mimeType;
