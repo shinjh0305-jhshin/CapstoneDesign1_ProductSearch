@@ -1,14 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router";
-import productCreate from "../views/productCreate.vue";
-import productDetail from "../views/productDetail.vue";
-import productList from "../views/productList.vue";
-import SalesList from "../views/salesList.vue";
+import dealCreate from "../views/dealCreate.vue";
+import dealDetail from "../views/dealDetail.vue";
+import dealList from "../views/dealList.vue";
+import dealRaised from "../views/dealRaised.vue";
 
 const routes = [
-  { path: "/", name: "Home", component: productList },
-  { path: "/create", name: "Create", component: productCreate },
-  { path: "/detail", name: "Detail", component: productDetail },
-  { path: "/sales", name: "SalesList", component: SalesList },
+  { path: "/", name: "Home", component: dealList },
+  { path: "/create", name: "Create", component: dealCreate },
+  { path: "/detail", name: "Detail", component: dealDetail },
+  { path: "/raised", name: "Raised", component: dealRaised },
 ];
 
 const router = createRouter({

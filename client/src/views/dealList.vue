@@ -9,25 +9,25 @@
         </div>
       </div>
       <div class="row g-3">
-        <div class="col-xl-3 col-lg-4 col-md-6" :key="i" v-for="(product, i) in productList">
+        <div class="col-xl-3 col-lg-4 col-md-6" :key="i" v-for="(deal, i) in dealList">
           <div class="card" style="width: 18rem">
-            <img :src="getImageUrl(product.path)" class="card-img-top" alt="..." />
+            <img :src="getImageUrl(deal.path)" class="card-img-top" alt="..." />
             <div class="card-body">
-              <h5 class="card-title">{{ product.name }}</h5>
+              <h5 class="card-title">{{ deal.name }}</h5>
               <p class="card-text">
-                <span class="badge bg-dark me-1">{{ categories[product.category] }}</span>
-                <span class="badge bg-red me-1">{{ product.ordered }}/{{ product.people }}명</span>
-                <span class="badge bg-blue me-1">{{ leftDays(product.ends) }}일뒤 마감</span>
+                <span class="badge bg-dark me-1">{{ categories[deal.category] }}</span>
+                <span class="badge bg-red me-1">{{ deal.ordered }}/{{ deal.people }}명</span>
+                <span class="badge bg-blue me-1">{{ leftDays(deal.ends) }}일뒤 마감</span>
               </p>
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group" role="group" aria-label="Basic example">
-                  <router-link :to="{ name: 'Detail', query: { product_id: product.id } }">
+                  <router-link :to="{ name: 'Detail', query: { product_id: deal.id } }">
                     <button type="button" class="btn btn-sm btn-outline-secondary">
                       공구 참여
                     </button>
                   </router-link>
                 </div>
-                <small class="text-dark">1인당 {{ product.price }}원</small>
+                <small class="text-dark">1인당 {{ deal.price }}원</small>
               </div>
             </div>
           </div>
@@ -39,26 +39,27 @@
 
 <script setup>
 import useAxios from "@/modules/axios";
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 import { categories, units } from "@/modules/selectData";
 import * as moment from "moment";
 
 const { axiosGet, axiosPost } = useAxios();
 
-const productList = ref([]);
+const dealList = ref([]);
 const categorySelected = ref(-1);
 
 const saveResult = function (respData) {
-  productList.value = respData;
+  dealList.value = respData;
+  console.log("Get success");
 };
 
-function getProductList() {
-  axiosGet("/product/list", saveResult);
-}
+onBeforeMount(async () => {
+  await axiosGet("/product/list", saveResult);
+  console.log(dealList);
+});
 
 const getImageUrl = (name) => {
-  console.log(name);
-  return new URL(`../../../images/${name}`, import.meta.url).href;
+  return `https://gongu-image.s3.ap-northeast-2.amazonaws.com/${name}`;
 };
 
 function leftDays(ends) {
@@ -66,9 +67,6 @@ function leftDays(ends) {
   const now = moment();
   return endDate.diff(now, "days");
 }
-
-getProductList(); //script setup에서는 created를 안 써도 된다.
-console.log(productList);
 </script>
 
 <style scoped>

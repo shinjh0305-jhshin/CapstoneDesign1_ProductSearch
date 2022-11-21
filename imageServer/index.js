@@ -12,9 +12,15 @@ const doUpload = upload.array("image_upload");
 
 app.post("/images/upload", (req, res) => {
   doUpload(req, res, (err) => {
-    if (err) return res.status(400).json({ success: false, err });
-    else return res.json({ success: true, file: req.files[0].filename, fileName: req.tempFileName });
+    if (err) {
+      console.log(err);
+      return res.status(400).json({ success: false, err });
+    } else return res.json({ success: true, fileName: req.tempFileName });
   });
+});
+
+app.get("/", (req, res) => {
+  res.send("Hello world");
 });
 
 app.listen(8081, () => {

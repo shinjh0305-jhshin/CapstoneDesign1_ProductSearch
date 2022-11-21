@@ -19,7 +19,7 @@
             <router-link class="nav-link active" to="/">제품리스트</router-link>
           </li>
           <li class="nav-item">
-            <router-link class="nav-link" to="/sales">제품등록</router-link>
+            <router-link class="nav-link" to="/raised">제품등록</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="#">채팅</router-link>
@@ -35,7 +35,7 @@
       </div>
     </div>
   </nav>
-  <router-view />
+  <router-view :key="route.fullPath" />
   <footer class="mt-5 py-5 bg-dark">
     <div class="row">
       <div class="col-12 col-md">
@@ -54,7 +54,9 @@
         >
           <title>Product</title>
           <circle cx="12" cy="12" r="10" />
-          <path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94" />
+          <path
+            d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"
+          />
         </svg>
         <small class="d-block mb-3 text-muted">&copy; 2017–2022</small>
       </div>
@@ -99,3 +101,9 @@
     </div>
   </footer>
 </template>
+
+<script setup>
+import { useRouter, useRoute } from "vue-router";
+const router = useRouter();
+const route = useRoute();
+</script>

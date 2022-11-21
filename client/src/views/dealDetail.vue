@@ -3,22 +3,57 @@
     <div class="container">
       <div class="row">
         <div class="col-md-5">
-          <div id="carouselExampleIndicators" class="carousel slide carousel-dark" data-bs-ride="true">
+          <div
+            id="carouselExampleIndicators"
+            class="carousel slide carousel-dark"
+            data-bs-ride="true"
+          >
             <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Slide 1"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="1"
+                aria-label="Slide 2"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="2"
+                aria-label="Slide 3"
+              ></button>
             </div>
             <div class="carousel-inner">
-              <div :class="`carousel-item ${i == 0 ? 'active' : ''}`" :key="i" v-for="(productImg, i) in productImage">
+              <div
+                :class="`carousel-item ${i == 0 ? 'active' : ''}`"
+                :key="i"
+                v-for="(productImg, i) in productImage"
+              >
                 <img :src="getImageUrl(productImg)" class="d-block w-100" alt="..." />
               </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="prev"
+            >
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="next"
+            >
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>
@@ -28,10 +63,15 @@
           <div class="card shadow-sm">
             <div class="card-body">
               <h5 class="card-title">{{ productDetail.name }}</h5>
-              <h5 class="card-title pt-3 pb-3 border-top">단가 : {{ formatCurrency(productDetail.price) }}원 | 구매 단위 : {{ productDetail.portion }}{{ productDetail.unit }}</h5>
+              <h5 class="card-title pt-3 pb-3 border-top">
+                단가 : {{ formatCurrency(productDetail.price) }}원 | 구매 단위 :
+                {{ productDetail.portion }}{{ productDetail.unit }}
+              </h5>
               <p class="card-text border-top pt-3">
                 <span class="badge bg-dark me-1">{{ productDetail.category }}</span>
-                <span class="badge bg-red me-1">{{ productDetail.ordered }}/{{ productDetail.people }}명</span>
+                <span class="badge bg-red me-1"
+                  >{{ productDetail.ordered }}/{{ productDetail.people }}명</span
+                >
                 <span class="badge bg-blue me-1">3일뒤 마감</span>
               </p>
               <p class="card-text pb-3">{{ productDetail.source }}</p>
@@ -43,9 +83,26 @@
                   </div>
                   <div class="col-auto">
                     <div class="input-group">
-                      <span class="input-group-text" style="cursor: pointer" @click="changeCount('-')">-</span>
-                      <input type="text" class="form-control" id="userPrice" style="width: 50px" v-model="total" @keyup="calculatePrice()" />
-                      <span class="input-group-text" style="cursor: pointer" @click="changeCount('+')">+</span>
+                      <span
+                        class="input-group-text"
+                        style="cursor: pointer"
+                        @click="changeCount('-')"
+                        >-</span
+                      >
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="userPrice"
+                        style="width: 50px"
+                        v-model="total"
+                        @keyup="calculatePrice()"
+                      />
+                      <span
+                        class="input-group-text"
+                        style="cursor: pointer"
+                        @click="changeCount('+')"
+                        >+</span
+                      >
                     </div>
                   </div>
                 </div>
@@ -144,7 +201,7 @@ function getProductImage() {
 
 //이미지를 실제 경로에서 가져온다.
 const getImageUrl = (name) => {
-  return new URL(`../assets/${name}`, import.meta.url).href;
+  return `https://gongu-image.s3.ap-northeast-2.amazonaws.com/${name}`;
 };
 
 //onCreated

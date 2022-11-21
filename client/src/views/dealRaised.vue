@@ -55,7 +55,7 @@ function getProductList() {
 }
 
 const getImageUrl = (name) => {
-  return new URL(`../assets/${name}`, import.meta.url).href;
+  return `https://gongu-image.s3.ap-northeast-2.amazonaws.com/${name}`;
 };
 
 //금액을 #,### 형태로 포맷팅한다.

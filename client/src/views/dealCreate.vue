@@ -113,7 +113,7 @@
             v-model:file-list="uploadedFile"
             class="upload-demo"
             drag
-            action="http://localhost:8081/images/upload"
+            action="http://ec2-54-180-101-210.ap-northeast-2.compute.amazonaws.com:8081/images/upload"
             multiple
             name="image_upload"
             :before-upload="beforeImageUpload"
@@ -237,10 +237,6 @@ const handleInputConfirm = () => {
   inputValue.value = "";
 };
 
-const showResult = () => {
-  console.log(newDeal);
-};
-
 function beforeImageUpload(img) {
   const regex = /^image\/*/;
   if (!regex.test(img.type)) {
@@ -261,16 +257,21 @@ function beforeImageUpload(img) {
   return true;
 }
 
+function onSuccess(resp) {
+  router.push("/");
+}
+
 async function submitDeal() {
   const dealServer = "http://localhost:8080/product/create";
   newDeal.fileList = []; //fileList 포맷 변경
+
   for (var i = 0; i < uploadedFile.value.length; i++) {
-    newDeal.fileList.push(uploadedFile.value[i].response.file);
+    newDeal.fileList.push(uploadedFile.value[i].response.fileName);
   }
   newDeal.tags = JSON.stringify(newDeal.tags); //newDeal stringify
   newDeal.ends = moment(newDeal.ends).format("YYYY-MM-DD"); //endDate 포맷 변경
-  await axiosPost(dealServer, newDeal);
-  router.replace("/");
+
+  await axiosPost(dealServer, newDeal, onSuccess);
 }
 </script>
 

@@ -148,4 +148,7 @@ dist/
 npm-debug.log
 yarn-error.log
 
+# AWS
+awsconfig.json
+
 # End of https://www.toptal.com/developers/gitignore/api/vuejs,node
