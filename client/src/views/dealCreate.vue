@@ -5,7 +5,7 @@
       <div class="mb-3 row">
         <label class="col-md-3 col-form-label">공구 제목</label>
         <div class="col-md-9">
-          <input type="text" class="form-control" v-model="deal.name" />
+          <el-input v-model="deal.name" />
         </div>
       </div>
       <div class="mb-3 row">
@@ -116,6 +116,7 @@
             action="http://ec2-54-180-101-210.ap-northeast-2.compute.amazonaws.com:8081/images/upload"
             multiple
             name="image_upload"
+            list-type="picture"
             :before-upload="beforeImageUpload"
             :limit="5"
           >

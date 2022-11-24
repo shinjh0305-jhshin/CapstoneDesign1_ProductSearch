@@ -27,8 +27,20 @@
             <td>{{ product.ordered }} / {{ product.people }}</td>
             <td>{{ formatTime(product.ends) }}</td>
             <td>
-              <button type="button" class="btn btn-warning me-1">수정</button>
-              <button type="button" class="btn btn-danger">삭제</button>
+              <router-link
+                :to="{ name: 'Update', query: { deal_id: product.id } }"
+                v-if="!product.deleted"
+              >
+                <button type="button" class="btn btn-warning me-1">수정</button>
+              </router-link>
+              <button
+                type="button"
+                class="btn btn-danger"
+                @click="confirmDelete(product.id)"
+                v-if="!product.deleted"
+              >
+                삭제
+              </button>
             </td>
           </tr>
         </tbody>
@@ -41,10 +53,14 @@
 import useAxios from "@/modules/axios";
 import currencyFormat from "@/modules/currencyFormatter.js";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
+//import { ElMessage, ElMessageBox } from "element-plus";
 
 const { axiosGet, axiosPost } = useAxios();
+const router = useRouter();
 
 const productList = ref([]);
+const tempBool = false;
 
 const saveResult = function (respData) {
   productList.value = respData;
@@ -68,6 +84,40 @@ function formatTime(value) {
   return temp[0];
 }
 
+function onSuccess(resp) {
+  console.log("yay!");
+  console.log(resp);
+  router.push("/");
+}
+
+const confirmDelete = async (productId) => {
+  const doDelete = await ElMessageBox.confirm(
+    "proxy will permanently delete the file. Continue?",
+    "Warning",
+    {
+      confirmButtonText: "OK",
+      cancelButtonText: "Cancel",
+      type: "warning",
+    }
+  );
+
+  if (doDelete) {
+    try {
+      await axiosPost(`/product/delete/${productId}`, {}, onSuccess);
+    } catch (error) {
+      console.error(error);
+    }
+    // ElMessage({
+    //   type: "success",
+    //   message: "Delete completed",
+    // });
+  } else {
+    ElMessage({
+      type: "info",
+      message: "Delete canceled",
+    });
+  }
+};
 getProductList(); //script setup에서는 created를 안 써도 된다.
 </script>
 

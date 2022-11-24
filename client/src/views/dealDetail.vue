@@ -187,6 +187,7 @@ const saveDetail = function (respData) {
 //제품 이미지 쿼리에 대한 콜백함수
 const saveImage = function (respData) {
   productImage.value = respData.result.map((x) => x.path);
+  console.log(productImage.value);
 };
 
 //제품 상세 쿼리

@@ -33,6 +33,7 @@ CREATE TABLE `products`.`product` (
   `ends` DATE NOT NULL,
   `createdat` DATETIME NOT NULL DEFAULT current_timestamp,
   `createdby` VARCHAR(100) NOT NULL,
+  `deleted` BOOLEAN NOT NULL DEFAULT 0 COMMENT '0-false 1-true'
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE,
   INDEX `IDX_SELLER` (`createdby` ASC, `createdat` ASC) INVISIBLE)

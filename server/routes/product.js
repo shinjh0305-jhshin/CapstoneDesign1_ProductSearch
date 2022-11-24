@@ -31,6 +31,48 @@ router.post("/create", async (req, res) => {
     });
   }
 });
+
+router.post("/update/:id", async (req, res) => {
+  try {
+    const product_id = req.params.id;
+    console.log(req.body);
+
+    await db.query(`UPDATE contents SET content = '${req.body.content}' WHERE product_id = ${product_id}`);
+    await db.query(`UPDATE product SET tags = '${req.body.tags}' WHERE id = ${product_id}`);
+
+    await db.query(`DELETE from image WHERE product_id = ${product_id}`);
+
+    await db.query(`INSERT INTO image(product_id, type, path) values (${product_id}, 1, '${req.body.fileList[0]}')`);
+    req.body.fileList.slice(1).forEach((x) => {
+      db.query(`INSERT INTO image(product_id, type, path) values (${product_id}, 2, '${x}')`);
+    });
+
+    res.status(200).json({
+      rsp: "ok",
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Update error. Check server log.");
+  }
+});
+
+router.post("/delete/:id", async (req, res) => {
+  try {
+    const product_id = req.params.id;
+    await db.query(`UPDATE product SET deleted = 1 WHERE id = ${product_id}`);
+    await db.query(`UPDATE image SET type = 2 WHERE product_id = ${product_id} AND type = 1`);
+
+    await db.query(`INSERT INTO image(product_id, type, path) VALUES (${product_id}, 1, 'deleted.jpg')`);
+
+    res.status(200).json({
+      status: 0,
+    });
+  } catch (error) {
+    console.log(error);
+    res.send("Update error. Check server log.");
+  }
+});
+
 router.get("/list", async (req, res) => {
   try {
     const [result] = await db.query(
@@ -56,6 +98,14 @@ router.get("/:id", async (req, res) => {
             ON ${product_id} = product.id
             AND product.id = contents.product_id;`
     );
+    const [images] = await db.query(
+      `SELECT path
+      FROM image
+      WHERE image.product_id=${product_id}`
+    );
+
+    result[0].fileList = [];
+    images.forEach((x) => result[0].fileList.push(x.path));
     res.json(result);
   } catch (err) {
     console.error(err);
